@@ -31,11 +31,16 @@ class ArticlesController < ApplicationController
     def create
         article = Article.create!(article_params)
         render json: article, status: :created
+        if task.save
+            render json: task, status: :created
+          else
+            render json: task.errors, status: :unprocessable_entity
+        end
     end
 
     private
 
-    def article_params
+    def task_params
         params.permit(:title , :comment , :picture)
     end
 
